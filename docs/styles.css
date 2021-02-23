@@ -38,3 +38,25 @@ div .chart-stage .chart-stage-flex {
   margin-top: 4px;
 }
 
+#full_map {
+    background: #000;
+}  
+
+.legend {
+  color: white;
+  background: black;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: black;
+  color: white;
+}
+
+.legend svg text {
+  fill: white;
+}
+
+.legend i {
+  display:none;
+}
+
