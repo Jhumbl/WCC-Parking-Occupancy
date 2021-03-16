@@ -1,5 +1,5 @@
 ---
-title: "City Highways - Parking Occupancy"
+title: "WCC City Highways - Parking Occupancy"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -61,7 +61,8 @@ leaflet(elementId = "full_map", options = leafletOptions(preferCanvas = TRUE)) %
     addGlPolygons(data=dplyr::filter(bays_buffer, Rstrct_=="Resident Bay"),color = ~pal(occ), fillColor=~pal(occ), popup=~paste(round(occ,1), "% Occupancy", sep=""), group="Resident Bay") %>%
   #addGlPolygons(data=dplyr::filter(bays_buffer, is.na(occ)),color = "grey", fillColor="grey", popup=~paste(round(occ,1), "% Occupancy", sep=""), group="Resident Bay") %>%
   addCircles(data=carclub, lat=~lon, lng=~lat, stroke=F, fillColor = "white", radius=20, fillOpacity = 0.9, label=~Location, group="Car Club Bays") %>%
-  addLayersControl(overlayGroups = c("Resident Bay", "Pay by Phone Bay", "Shared Use Bay", "Car Club Bays"), position = "topright", options=layersControlOptions(collapsed = FALSE)) %>%
+  addLabelOnlyMarkers(data=st_centroid(wards %>% st_transform(27700)) %>% st_transform(4326), label=~NAME, labelOptions = labelOptions(noHide = TRUE, direction = 'top', textOnly = TRUE, style=list(color="white", stroke="black", "background-color"="rgba(1,1,1,0.7)")), group="Ward Labels") %>%
+  addLayersControl(overlayGroups = c("Resident Bay", "Pay by Phone Bay", "Shared Use Bay", "Car Club Bays", "Ward Labels"), position = "topright", options=layersControlOptions(collapsed = FALSE)) %>%
   addLegend("bottomright", pal = pal_r, values = ~occ,
     title = "Occupancy",
     opacity = 1,
@@ -78,8 +79,11 @@ Data {data-icon="fa-table"}
 
 ```{r}
 bays_buffer %>%
+  st_transform(27700) %>%
+  st_intersection(wards%>%select(NAME) %>% st_transform(27700)) %>%
+  rename(Ward=NAME) %>%
   as.data.frame() %>%
-  select(-geometry) %>%
+  select(Ward, street, occ, Rstrct_, no_bays) %>%
   distinct() %>%
   dplyr::arrange(street) %>%
   dplyr::mutate(occ = round(occ,1)) %>%

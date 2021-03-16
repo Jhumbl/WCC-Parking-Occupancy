@@ -60,3 +60,8 @@ div .chart-stage .chart-stage-flex {
   display:none;
 }
 
+.leaflet-control-layers-expanded {
+  color: white;
+  background: black;
+}
+
