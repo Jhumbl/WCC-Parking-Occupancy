@@ -96,7 +96,7 @@ About {data-icon="fa-bars"}
 
 * Author: Westminster City Highways
 * Data is from a 2018 Westminster Survey
-* Data can be downloaded here: 
+* Data can be downloaded [here](https://github.com/Jhumbl/WCC-Parking-Occupancy/tree/main/data)
 
 <!-- Description of Report -->
 
