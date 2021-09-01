@@ -27,7 +27,8 @@ wards <- wards %>%
   dplyr::filter(DISTRICT=="City of Westminster") %>%
   st_transform(4326)
 
-bays <- read_sf("~/Desktop/bay_occupancy_data/bay_occupancy.shp")
+#bays <- read_sf("~/Desktop/bay_occupancy_data/bay_occupancy.shp")
+bays <- read_sf("../bay_occupancy_data/bay_occupancy.shp")
 
 pal <- leaflet::colorNumeric("RdYlBu", domain = c(0,101), n = 9, reverse = T)
 pal_r <- leaflet::colorNumeric("RdYlBu", domain = c(0,101), n = 9)
@@ -51,8 +52,9 @@ Map {data-icon="fa-map"}
 ### Page 1 {.no-padding .no-title}
 
 ```{r}
-leaflet(elementId = "full_map", options = leafletOptions(preferCanvas = TRUE)) %>% 
+leaflet(elementId = "full_map") %>% 
   addProviderTiles(providers$CartoDB.DarkMatter) %>%
+  setView(lat = 51.513482, lng=-0.158091, zoom=15) %>%
   #addGlPoints(data=st_as_sf(data.frame(id=c(1,2,3,4,5), lat=c(51.1,51.2,51.3,51.4,51.5), lon=c(1.1,1.2,1.3,1.5,1.6)), coords=c("lon", "lat")))
   #addPolygons(data=bays, fill="blue", fillOpacity=1, weight=1.5, color = ~pal(occ), label=~round(occ,1))
   addPolygons(data=wards, fill=F, weight=0.5, color="white", opacity=0.9) %>%
@@ -95,11 +97,10 @@ bays_buffer %>%
 About {data-icon="fa-bars"}
 ===================================== 
 
-#### About title
+#### About
 
 * Author: Westminster City Highways
-* Date Created: 2021-02-23
-* Date Updated: `r lubridate::today()`
+* Data is from a 2018 Westminster Survey
 
 <!-- Description of Report -->
 
